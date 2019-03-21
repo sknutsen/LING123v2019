@@ -16,10 +16,10 @@ results.sort()
 for r in results:
     print(r)
 
-most_common_sequence = words[0]
-most_common_sequence_count = words.count(words[0])
-for word in words:
-    w_count = words.count(word)
+most_common_sequence = results[0]
+most_common_sequence_count = results.count(results[0])
+for word in results:
+    w_count = results.count(word)
     if w_count > most_common_sequence_count:
         most_common_sequence = word
         most_common_sequence_count = w_count
