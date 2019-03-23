@@ -15,4 +15,4 @@ for word in words:
 ttr = (len(unique_words) / len(words)) * 100  # Calculating the Type-Token Ratio
 
 
-print(ttr)  # Printing out the results
+print('Type-Token Ratio ', int(ttr), '%', sep='')  # Printing out the results
