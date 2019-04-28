@@ -2,67 +2,38 @@ import codecs
 import re
 
 
-fileIn = codecs.open("got.txt", "r", "utf-8")
-text = fileIn.read()
-fileIn.close()
+fileIn = codecs.open("got.txt", "r", "utf-8")  # Opening the input file
+text = fileIn.read()  # Reading the contents of the input file
+fileIn.close()  # Closing the input file as it is no longer needed
 
+# Declaring the variables the will store the results
 unicorn = "\n"
 title = ""
 keywords = ""
-plain_text = []
 html = "<!doctype html>"
 
-firstIndex = 0
-for i in range(len(text)):
-    if text[i] + text[i + 1] + text[i + 2] + text[i + 3] == "<!--":
-        firstIndex = i
-        break
+# Finding the unicorn in the text
+regex = r"<!--.*?-->"
+matches = re.findall(regex, text, flags=re.DOTALL)
+unicorn += matches[0]
 
-for i in range(firstIndex, len(text)):
-    unicorn += text[i]
-    if text[i] + text[i + 1] + text[i + 2] == "-->":
-        unicorn += text[i + 1] + text[i + 2]
-        break
+# Finding the title of the article
+regex = "<title>.*</title>"
+matches = re.findall(regex, text)
+title += re.sub(re.compile('<.*?>'), '', matches[0])
 
-firstIndex = 0
-for i in range(len(text)):
-    if text[i] + text[i + 1] + text[i + 2] + text[i + 3] + text[i + 4] + text[i + 5] + text[i + 6] == "<title>":
-        firstIndex = i + 7
-        break
+# Finding the keywords
+regex = "<meta name=\"keywords\" content=\".*\">"
+matches = re.findall(regex, text)
+temp = matches[0]
+keywords += temp[len("<meta name=\"keywords\" content=\".*\">") - 4:-2]
 
-for i in range(firstIndex, len(text)):
-    title += text[i]
-    if text[i + 1] + text[i + 2] + text[i + 3] + text[i + 4] + text[i + 5] + text[i + 6] + text[i + 7] + text[i + 8] == "</title>":
-        break
+# Finding the paragraphs of the article
+regex = "<p>.*</p>"
+matches = re.findall(regex, text)
+plain_text = matches
 
-
-firstIndex = 0
-for i in range(len(text)):
-    if text[i] + text[i + 1] + text[i + 2] + text[i + 3] + text[i + 4] + text[i + 5] + text[i + 6] + text[i + 7] == 'name="ke':
-        firstIndex = i + 25
-        break
-
-for i in range(firstIndex, len(text)):
-    keywords += text[i]
-    if text[i + 1] + text[i + 2] == "\">":
-        break
-
-i = 0
-while i < len(text):
-    paragraph = ""
-
-    firstIndex = 0
-    if i + 2 < len(text) and text[i] + text[i + 1] + text[i + 2] == '<p>':
-        firstIndex = i + 3
-        for j in range(firstIndex, len(text)):
-            paragraph += text[j]
-            if text[j + 1] + text[j + 2] + text[j + 3] + text[j + 4] == "</p>":
-                plain_text.append(paragraph)
-                i = j + 5
-                break
-
-    i += 1
-
+# Adding the results to the html string
 html += unicorn + "\n"
 html += """\
 <html lang="en">
@@ -90,11 +61,13 @@ html += """\
         <ul>
 """
 
+# Adding the paragraphs to the list after removing the markup
 for p in plain_text:
     regex = re.compile('<.*?>')
     txt = re.sub(regex, '', p)
     html += "\t\t\t<li>" + txt + "</li>\n"
 
+# Adding the closing html tags
 html += """\
         </ul>
     </body>
