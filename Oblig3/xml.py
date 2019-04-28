@@ -42,9 +42,15 @@ for i, stanza in enumerate(stanzalist):
         tokens = line.split(" ")  # Splitting the line into tokens
         for token in tokens:  # Adding tags representing the current token which contains wordform and rhyme
             if token == '&':  # If the token is & then it is replaced with &amp; in order to avoid errors
-                xml += "\t\t<token t-id=\"" + str(i) + "-" + str(k) + "\">\n\t\t\t<wordform>&amp;</wordform>\n\t\t\t<rhyme>" + rhyme + "</rhyme>\n\t\t</token>\n"
+                xml += "\t\t<token t-id=\"" + str(i) + "-" + str(k) + "\">\n\t\t\t<wordform>&amp;</wordform>\n" \
+                                                                      "\t\t\t<rhyme>" + rhyme + "</rhyme>\n" \
+                                                                                                "\t\t</token>\n"
             else:
-                xml += "\t\t<token t-id=\"" + str(i) + "-" + str(k) + "\">\n\t\t\t<wordform>" + token + "</wordform>\n\t\t\t<rhyme>" + rhyme + "</rhyme>\n\t\t</token>\n"
+                xml += "\t\t<token t-id=\"" + \
+                       str(i) + "-" + str(k) + "\">\n" \
+                                               "\t\t\t<wordform>" + token + "</wordform>\n" \
+                                                                            "\t\t\t<rhyme>" + rhyme + "</rhyme>\n" \
+                                                                                                      "\t\t</token>\n"
             k += 1
 
     xml += "\t</stanza>\n"  # Adding the closing tag to the stanza
