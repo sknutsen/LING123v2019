@@ -83,7 +83,6 @@
             cid: 5561872,
             etype: "video",
               id:'5561872',
-              // TODO: map legacy Time page types to KARMA page types (less important because KARMA can do the mapping)
               type: 'video_article',
                       channel: 'newsfeed',
         },
